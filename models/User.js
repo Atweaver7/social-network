@@ -15,6 +15,9 @@ const UserSchema = new Schema({
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
 
+        // MISSING CODE HERE, DONT FORGET DUMB DUMB // 
+
+
 });
 
 const ThoughtSchema = new Schema({
@@ -47,3 +50,6 @@ const ThoughtSchema = new Schema({
 reactionSchema.virtual('reactionCount').get(function() {
     return this.replies.length;
 })
+
+
+module.exports = router;
