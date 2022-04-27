@@ -4,7 +4,7 @@ const userController = {
     getAllUsers(req, res) {
         User.find({})
         .populate({ 
-        path: 'users',
+        path: __dirname + '/users',
         select: '-__V'
     })
     .select('-__V')

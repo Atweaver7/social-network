@@ -8,9 +8,9 @@ const {
 } = require('../../controllers/userController');
 
 router
-.route('/:id')
-.get(getallUsers)
-.post(createUser);
+.route('/')
+.get(getAllUsers)
+.post(userCreate);
 
 router
 .route('/:id')
