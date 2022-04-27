@@ -51,5 +51,6 @@ reactionSchema.virtual('reactionCount').get(function() {
     return this.replies.length;
 })
 
+const User = model('User', userSchema)
 
-module.exports = router;
+module.exports = User;
