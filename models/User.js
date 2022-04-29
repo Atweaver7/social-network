@@ -1,39 +1,6 @@
 const { Schema, model, } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
-
-const ThoughtSchema = new Schema({
-    thoughtText: {
-        type: String,
-        required: true,
-        minlength: 12,
-        maxlength: 280
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-        get: createdAtVal => dateFormat(createdAtVal)
-    },
-    userName: {
-        type: String,
-        required: true,
-    },
-    reactions: {reactionSchema}
-    },
-    {
-        toJSON: {
-            virtuals: true,
-            getters: true
-        },
-        id: false
-    }
-);
-
-reactionSchema.virtual('reactionCount').get(function() {
-    return this.replies.length;
-})
-
-
 const UserSchema = new Schema({
     username: {
         type: String,
@@ -47,13 +14,32 @@ const UserSchema = new Schema({
         unique: true,
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
-        thoughts: {thoughtSchema}
+        thoughts: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Thought'
+        }],
+        friends: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
 
+        }]
+    },
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true,
+        },
+        id: false
+    }
+)
+UserSchema.virtual('friendCount').get(function() {
+    return this.friends.length;
+})
 
         // MISSING CODE HERE, DONT FORGET DUMB DUMB // 
 
 
-});
+
 
 
 

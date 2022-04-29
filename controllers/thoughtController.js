@@ -62,7 +62,7 @@ const thoughtController = {
       })
       .catch((err) => res.json(err));
   },
-  deleteThoughts({ params }, res) {
+  deleteThought({ params }, res) {
     Thought.findOneAndDelete({ _id: params.id })
       .then((dbThoughtsData) => {
         if (!dbThoughtsData) {
@@ -112,3 +112,5 @@ const thoughtController = {
       .catch((err) => res.status(400).json(err));
   },
 };
+
+module.exports = thoughtController;
