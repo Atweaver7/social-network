@@ -1,7 +1,6 @@
 const { Schema, model, Types } = require('mongoose');
-const dateFormat = require('../utils/dateFormat');
+const moment = require('moment');
 
-// ReactionsSchema
 const ReactionSchema = new Schema(
     {
     // Set custom ID 
@@ -43,14 +42,12 @@ const ThoughtSchema = new Schema(
     createdAt: {
         type: Date,
         default: Date.now,
-        // Moment
         get: (createdAtVal) => moment(createdAtVal).format('MMM DD, YYYY [at] hh:mm a')
     },
     username: {
         type: String,
         required: true
     },
-    // Use ReactionsSchema to validate data
     reactions: [ReactionSchema]
     },
     {

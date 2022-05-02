@@ -1,34 +1,42 @@
 const { User } = require('../models');
 
+
 const userController = {
 
     // Get ALl users
     getAllUsers(req, res) {
         User.find({})
-        .populate({ 
-        path: __dirname + 'users',
-        select: '-__V'
-    })
-    .select('-__V')
-    .sort({_id: -1})
-    .then(dbUserData => res.json(dbUserData))
-    .catch(err => {
-        console.log(err);res.sendStatus(400);
-    });
+        // populate users thoughts
+        .populate({path: 'thoughts', select: '-__v'})
+        // populate user friends
+        .populate({path: 'friends', select: '-__v'})
+        .select('-__v')
+        // .sort({_id: -1})
+        .then(dbUsersData => res.json(dbUsersData))
+        .catch(err => {
+            console.log(err);
+            res.status(400).json(err);
+        });
     },
 
     // get a single user by id
-    getUserById ({ params }, res) {
-        User.findOne({_id: params.id})
-        .populate({
-            path: 'users',
-            select: '-__V'
+    getUserById({params}, res) {
+        User.findOne({_id: params.id })
+        .populate({path: 'thoughts', select: '-__v'})
+        .populate({path: 'friends', select: '-__v'})
+        .select('-__v')
+        // return if no user is found 
+        .then(dbUsersData => {
+            if(!dbUsersData) {
+                res.status(404).json({message: 'No User with this particular ID!'});
+                return; 
+            }
+            res.json(dbUsersData)
         })
-        .select('-__V')
-        .then(dbUserData => res.json(dbUserData))
         .catch(err => {
-            console.log(err);res.sendStatus(400);
-        });
+            console.log(err);
+            res.status(400).json(err)
+        })
     },
 
     // create a new user
@@ -54,7 +62,7 @@ const userController = {
         })
     },
     userDelete({ params }, res) {
-        User.findOneAndDelete({ _id: params.id}, body, {new: true, runValidators: true})
+        User.findOneAndDelete({_id: params.id})
         .then(dbuserData => {
             if (!dbuserData) {
                 res.status(400).json({message:'No user with this ID exists'});
